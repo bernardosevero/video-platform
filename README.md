@@ -41,7 +41,6 @@
 *   `dimensions` (String, e.g., "1920x1080") - *Populated by Worker Metadata/Status Updater*
 *   `has_captions` (Boolean) - *Defaults to false*
 *   `created_at` (Timestamp)
-*   `updated_at` (Timestamp)
 
 ### 3.2. S3 Object Storage Structure
 
