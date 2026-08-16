@@ -154,7 +154,7 @@ The REST API is designed to be lightweight, delegating heavy payload transfers t
 ## 6. Requirements Checklist
 
 ### Functional Requirements & Constraints
-*   ~~Support videos up to 1GB / 10 min~~: Met using multi-layered validation. The 1GB size limit is strictly enforced by the S3 Pre-signed POST Policy (`content-length-range`). Upload performance is optimized via Multipart Upload directly to S3, chunking the file on the client for maximum network efficiency.
+*   ~~Support videos up to 1GB / 10 min~~: Met using validation. The 1GB size limit is strictly enforced by the S3 Pre-signed POST Policy (`content-length-range`). Upload performance is optimized via Multipart Upload directly to S3, chunking the file on the client for maximum network efficiency.
 *   ~~Video transcoding (360p, 720p, 1080p)~~: Solved by delegating asynchronous processing to AWS MediaConvert, optimizing infrastructure.
 *   ~~Thumbnails and Sprite Sheets generation~~: Met natively by MediaConvert's image output settings, including automatic `.vtt` mapping generation.
 *   ~~Optional captions served as static files~~: Addressed through a simple upload flow where the Worker just moves the `.vtt` file from the ingest zone to the final storage, without transcoding.
