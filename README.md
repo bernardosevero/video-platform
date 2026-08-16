@@ -70,9 +70,11 @@ The REST API is designed to be lightweight, delegating heavy payload transfers t
     { 
       "filename": "video.mp4", 
       "fileSize": 104857600, 
+      "clientDurationSeconds": 500,
       "hasCaptions": false 
     }
     ```
+*   **Validation:** The BFF strictly rejects requests where `fileSize` > 1GB or `clientDurationSeconds` > 600s (10 min) with a 400 Bad Request. For the actual S3 upload, the BFF generates a Pre-signed POST Policy enforcing a strict `content-length-range` up to 1GB to prevent **limit bypass**.
 *   **Response (200 OK):** 
     ```json
     {
@@ -152,7 +154,7 @@ The REST API is designed to be lightweight, delegating heavy payload transfers t
 ## 6. Requirements Checklist
 
 ### Functional Requirements & Constraints
-*   ~~Support videos up to 1GB / 10 min~~: Met using Multipart Upload directly to S3, chunking the file on the client and sending parallel batches for maximum network efficiency.
+*   ~~Support videos up to 1GB / 10 min~~: Met using multi-layered validation. The 1GB size limit is strictly enforced by the S3 Pre-signed POST Policy (`content-length-range`). Upload performance is optimized via Multipart Upload directly to S3, chunking the file on the client for maximum network efficiency.
 *   ~~Video transcoding (360p, 720p, 1080p)~~: Solved by delegating asynchronous processing to AWS MediaConvert, optimizing infrastructure.
 *   ~~Thumbnails and Sprite Sheets generation~~: Met natively by MediaConvert's image output settings, including automatic `.vtt` mapping generation.
 *   ~~Optional captions served as static files~~: Addressed through a simple upload flow where the Worker just moves the `.vtt` file from the ingest zone to the final storage, without transcoding.
